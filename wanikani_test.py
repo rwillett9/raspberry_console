@@ -1,4 +1,5 @@
 import os
+import requests
 
 
 # retrieve private token from virtual environment
@@ -10,3 +11,8 @@ if WANIKANI_TOKEN is None:
 else:
     print('private token found')
 
+USERS_REQUEST_URL = 'https://api.wanikani.com/v2/user'
+AUTH_HEADERS = {'Authorization': 'Bearer %s' % WANIKANI_TOKEN}
+
+response = requests.get(url=USERS_REQUEST_URL, headers=AUTH_HEADERS)
+print(response.json())
