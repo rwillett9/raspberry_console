@@ -1,2 +1,4 @@
 # hide virtual env stuff from git
 venv/*
+
+.DS_store
