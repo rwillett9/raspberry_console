@@ -7,9 +7,10 @@ from app.user.service import Service as UserService
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/user', methods=['GET'])
+@app.route('/test', methods=['GET'])
 def index():
-  return json_response(UserService().find_user())
+  user = UserService().find_user()
+  return json_response({'username': user['data']['username']})
 
 
 # helper function

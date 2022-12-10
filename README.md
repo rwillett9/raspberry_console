@@ -2,76 +2,85 @@
 
 Solo side project where I will create a console-like display to use with the Raspberry Pi 4 Model B and the 7" touch screen display made for the Raspberry Pi
 
+# Commands
+
+## Flask (backend)
+
+For development:
+
+```sh
+FLASK_APP=$PWD/app/http/api/endpoints.py FLASK_DEBUG=true pipenv run python -m flask run --port 4433
+```
+
+Normal deploy:
+
+```sh
+FLASK_APP=$PWD/app/http/api/endpoints.py pipenv run python -m flask run --port 4433
+```
+
+# Setup
+
 The following steps will help with setup for running this web-based project
 
 # Pull Git Files
 
 @TODO
 
-# Virtual Environment Setup
+# Pipenv
 
-Create a local virtual environment using the following command:
-
-Mac:
+Run the following commands to install ```pipenv``` which is what we will use to manage our dependencies
 
 ```sh
-python3 -m venv venv
+brew install pipenv  
+pip install --user pipenv
 ```
 
-&emsp;Windows:
-
+Next, navigate into the ```pi_dashboard``` folder and run the following command to install our dependencies
 ```sh
-python -m venv venv
+pipenv install
 ```
 
 # Setup Private WaniKani Token Key
 
-Navigate to the ```venv/bin/activate``` script and make the following additions:
-
-At the beginning of the ```deactivate``` function, add this line of code:
+While still in ```pi_dashboard``` create a file called ```.env```. This file will store any private API tokens that are needed for API calls. Add the following line of code, replacing ```{{YOUR_TOKEN_HERE}}``` with your WaniKani token (this token does not need any write permissions, it will be used for read only purposes).
 
 ```sh
-unset wanikani_token
+WANIKANI_TOKEN="{{YOUR_TOKEN_HERE}}"
 ```
 
-Just after the ```deactivate``` function, add a line of code that looks like this except replace YOUR-TOKEN-KEY with your token key from WaniKani:
+To double-check that this worked, we can run ```wanikani_test.py``` using the following command:
 
 ```sh
-wanikani_token="YOUR-TOKEN-KEY"
+pipenv run python wanikani_test.py
 ```
 
-# Pip Packages
+If everything is working, you should see your WaniKani username!
 
-Run the following command while in the virtual environment to install the followig pip packages:
+# Test Backend Setup
+
+Run the following command in the terminal to make sure everything was setup properly:
 
 ```sh
-pip install requests
+FLASK_APP=$PWD/app/http/api/endpoints.py FLASK_DEBUG=true pipenv run python -m flask run --port 4433
 ```
 
-# Angular Frontend
+The output should look something like this:
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.0.2.
+```sh
+Loading .env environment variables...
 
-## Development server
+...
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+ * Restarting with stat
+ * Debugger is active!
+```
 
-## Code scaffolding
+Next navigate to [localhost:4433/test](localhost:4433/test) in any web browser. You should see get a JSON object with the following format:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```sh
+{
+  "username": "YOUR USERNAME"
+}
+```
 
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+If you see this, your backend is setup properly! See the commands section above for deploying the backend locally.
