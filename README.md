@@ -83,4 +83,4 @@ Next navigate to [localhost:4433/test](localhost:4433/test) in any web browser. 
 }
 ```
 
-If you see this, your backend is setup properly! See the commands section above for deploying the backend locally.
+If you see this, your backend is setup properly! See the commands section above for running the backend locally.
