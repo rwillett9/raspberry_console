@@ -3,12 +3,14 @@ import React, { Component } from 'react'
 class Home extends Component {
 
   // constructor(props) {
-  //     super(props)
+  //   super(props)
   // }
 
   render() {
     return (
-      <div>HOME SCREEN</div>
+      <div>
+        <a href='/wanikani'><img src={require('./crabgator.webp')} alt='Wanikani' /></a>
+      </div>
     )
   }
 }

@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 
 import App from './Components/App/App';
 import Home from './Components/Home/Home'
+import Wanikani from './Components/Wanikani/Wanikani'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -13,6 +14,7 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Home />} />
+        <Route path='/wanikani' element={<Wanikani />} />
         <Route path='/test' element={<App />} />
       </Routes>
     </BrowserRouter>
