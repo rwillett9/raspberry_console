@@ -9,7 +9,7 @@ class Home extends Component {
   render() {
     return (
       <div>
-        <a href='/wanikani'><img src={require('./crabgator.webp')} alt='Wanikani' /></a>
+        <a href='/wanikani'><img src={require('./crabigator.webp')} alt='Wanikani' /></a>
       </div>
     )
   }
