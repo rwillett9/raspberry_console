@@ -1,37 +1,30 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
 
-class Home extends Component {
+function Wanikani() {
+  const [isLoading, setLoading] = useState(true)
+  const [username, setUsername] = useState('')
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      is_loading: true,
-      username: ''
-    }
-  }
-
-  // this is called after render
-  componentDidMount() {
+  useEffect(() => {
     axios.get('http://localhost:4433/test')
       .then(res => {
-        console.log(this.state)
-        this.setState({ is_loading: false, username: res.data.username })
+        // update state vars
+        setUsername(res.data.username)
+        setLoading(false)
       })
       .catch(err => {
         console.error('Error: ', err.message)
       })
-  }
+  })
 
-  render() {
-    return (
-      <div>
-        <div>WANIKANI SCREEN</div>
-        <div>{this.state.username}</div>
-      </div>
-    )
-  }
+  return (
+    <div>
+      <a href='/'>Back</a>
+      <div>WANIKANI SCREEN</div>
+      <div>{username}</div>
+    </div>
+  )
 }
 
-export default Home
+export default Wanikani

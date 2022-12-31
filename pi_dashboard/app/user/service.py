@@ -1,4 +1,4 @@
-import os, requests, sys
+import os, requests
 
 
 class Service(object):
@@ -14,3 +14,8 @@ class Service(object):
   def find_user(self):
     user = requests.get(url='https://api.wanikani.com/v2/user', headers=self.headers)
     return user.json()
+
+  # return the username of the user associated with the secret token
+  def get_username(self):
+    user = requests.get(url='https://api.wanikani.com/v2/user', headers=self.headers)
+    return user.json()['data']['username']
