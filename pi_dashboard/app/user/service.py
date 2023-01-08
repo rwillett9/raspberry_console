@@ -1,6 +1,5 @@
 import os, requests
 
-
 class Service(object):
   def __init__(self):
     # find token and setup headers object

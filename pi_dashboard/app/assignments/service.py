@@ -1,10 +1,9 @@
 import os, requests
-from datetime import datetime
+from time import gmtime, strftime
+from urllib.parse import quote
 
 
 class Service(object):
-  ASSIGNMENTS_BASE_URL = 'https://api.wanikani.com/v2/assignments'
-
   def __init__(self):
     # find token and setup headers object
     token = os.getenv('WANIKANI_TOKEN')
@@ -15,18 +14,16 @@ class Service(object):
 
   # get assignments that are currently available as of the current time
   def get_available_assignments(self):
-    # build request url
     query_parameters = [
-      'available_before=%s' % (datetime.now().strftime('%Y-%m-%dT%H:%M:%SZ'))
+      'available_before=%s' % (strftime('%Y-%m-%dT%H:%M:%SZ', gmtime()))
     ]
     request_url = '?' + '&'.join(query_parameters)
 
-    # deal with possible pagination of results
+    # deal with possible pagination of results and collect assignment objects
     assignments = []
     get_more = True
     while get_more:
-      response = requests.get(url=Service.ASSIGNMENTS_BASE_URL + request_url, headers=self.headers).json()
-      print(response)
+      response = requests.get(url='https://api.wanikani.com/v2/assignments' + request_url, headers=self.headers).json()
       assignments.extend(response['data'])
 
       if response['pages']['next_url'] is not None:
