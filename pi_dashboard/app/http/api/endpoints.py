@@ -2,11 +2,11 @@ import os, sys
 import helpers
 from flask import Flask
 from flask_cors import CORS, cross_origin
-from app.assignments.service import Service as AssignmentsService
-from app.reviews.service import Service as ReviewsService
-from app.subjects.service import Service as SubjectsService
-from app.user.service import Service as UserService
-from app.japaneseWOTD.service import Service as WOTDService
+from app.services.assignments_service import AssignmentsService
+from app.services.reviews_service import ReviewsService
+from app.services.subjects_service import SubjectsService
+from app.services.user_service import UserService
+from app.services.word_of_the_day_service import WordOfTheDayService
 
 
 app = Flask(__name__)
@@ -93,7 +93,7 @@ def get_recent_reviews():
 @app.route('/word-of-the-day', methods=['GET'])
 @cross_origin()
 def get_word_of_the_day():
-  word_of_the_day_data = WOTDService().get_word_of_the_day()
+  word_of_the_day_data = WordOfTheDayService().get_word_of_the_day()
   print(word_of_the_day_data)
 
   return helpers.json_response(word_of_the_day_data)

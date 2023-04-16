@@ -1,6 +1,7 @@
 import os, requests
+from service import Service
 
-class Service(object):
+class UserService(Service):
   def __init__(self):
     # find token and setup headers object
     token = os.getenv('WANIKANI_TOKEN')
