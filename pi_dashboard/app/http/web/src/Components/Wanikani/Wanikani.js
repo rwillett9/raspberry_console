@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import Button from 'react-bootstrap/Button'
 
 
 function Wanikani() {
@@ -20,7 +21,8 @@ function Wanikani() {
 
   return (
     <div>
-      <a href='/'>Back</a>
+      <Button href='/'>Back</Button>
+      <Button href='/wanikani/reviews'>Recent Reviews</Button>
       <div>WANIKANI SCREEN</div>
       <div>{username}</div>
     </div>

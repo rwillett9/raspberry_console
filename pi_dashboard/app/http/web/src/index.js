@@ -1,12 +1,20 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import React from 'react'
+import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import './index.css';
-import reportWebVitals from './reportWebVitals';
+import './index.css'
+import reportWebVitals from './reportWebVitals'
 
-import App from './Components/App/App';
+// component imports
+import App from './Components/App/App'
 import Home from './Components/Home/Home'
 import Wanikani from './Components/Wanikani/Wanikani'
+import WanikaniReviews from './Components/Wanikani/WanikaniReviews'
+
+// bootstrap includes
+import 'https://cdn.jsdelivr.net/npm/react/umd/react.production.min.js'
+import 'https://cdn.jsdelivr.net/npm/react-dom/umd/react-dom.production.min.js'
+import 'https://cdn.jsdelivr.net/npm/react-bootstrap@next/dist/react-bootstrap.min.js'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -14,6 +22,7 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Home />} />
+        <Route path='/wanikani/reviews' element={<WanikaniReviews />} />
         <Route path='/wanikani' element={<Wanikani />} />
         <Route path='/test' element={<App />} />
       </Routes>
