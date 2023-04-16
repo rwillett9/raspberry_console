@@ -4,6 +4,7 @@ from flask_cors import CORS, cross_origin
 from app.assignments.service import Service as AssignmentsService
 from app.subjects.service import Service as SubjectsService
 from app.user.service import Service as UserService
+from app.japaneseWOTD.service import Service as WOTDService
 
 
 app = Flask(__name__)
@@ -82,3 +83,11 @@ def get_current_assignments():
     'assignment_stats': assignment_stats,
     'username': UserService().get_username()
   })
+
+@app.route('/word-of-the-day', methods=['GET'])
+@cross_origin()
+def get_word_of_the_day():
+  word_of_the_day_data = WOTDService().get_word_of_the_day()
+  print(word_of_the_day_data)
+
+  return json_response(word_of_the_day_data)
