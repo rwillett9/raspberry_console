@@ -21,6 +21,27 @@ def test():
   user = UserService().find_user()
   return helpers.json_response({'username': user['data']['username']})
 
+@app.route('/recent-reviews', methods=['GET'])
+@cross_origin()
+def get_recent_reviews():
+  # get review data from the last 24 hours
+  raw_reviews = ReviewsService().get_recent_reviews(helpers.formatted_date_day_ago())
+  processed_reviews = ReviewsService.process_reviews(raw_reviews)
+
+  # generate unique set of subject ids
+  subject_ids = set()
+  for review in raw_reviews['data']:
+    subject_ids.add(review['data']['subject_id'])
+
+  # fetch the subject objects from WaniKani
+  raw_subjects = SubjectsService().get_subjects_by_id_list(subject_ids)
+  processed_subjects = SubjectsService.process_subjects(raw_subjects)
+
+  return helpers.json_response({
+    'reviews': processed_reviews,
+    'subjects': processed_subjects
+  })
+
 '''
 this function will provide the data for the main WaniKani dashboard:
 {
@@ -77,14 +98,6 @@ def get_current_assignments():
   return helpers.json_response({
     'assignment_stats': assignment_stats
   })
-
-@app.route('/recent-reviews', methods=['GET'])
-@cross_origin()
-def get_recent_reviews():
-  reviews = ReviewsService().get_recent_reviews(helpers.formatted_date_day_ago())
-  processed_reviews = ReviewsService.process_reviews(reviews)
-  # print(reviews)
-  return helpers.json_response(processed_reviews)
 
 @app.route('/word-of-the-day', methods=['GET'])
 @cross_origin()
