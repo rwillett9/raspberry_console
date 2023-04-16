@@ -19,14 +19,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/wanikani/reviews' element={<WanikaniReviews />} />
-        <Route path='/wanikani' element={<Wanikani />} />
-        <Route path='/test' element={<App />} />
-      </Routes>
-    </BrowserRouter>
+    <div style={{backgroundColor: 'rgb(255, 244, 227)'}}>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/wanikani/reviews' element={<WanikaniReviews />} />
+          <Route path='/wanikani' element={<Wanikani />} />
+          <Route path='/test' element={<App />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
   </React.StrictMode>
 );
 
