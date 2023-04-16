@@ -25,7 +25,9 @@ class SubjectsService(Service):
       # @TODO might have to deal with images here
       # if subject['data']['characters'] is not None:
       #   pass
-      processed_subjects[subject['id']] = {}
+      processed_subjects[subject['id']] = {
+        'type': subject['object']
+      }
       try:
         processed_subjects[subject['id']]['character'] = subject['data']['characters']
       except:

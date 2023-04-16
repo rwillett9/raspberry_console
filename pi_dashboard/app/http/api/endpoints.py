@@ -26,16 +26,18 @@ def test():
 def get_recent_reviews():
   # get review data from the last 24 hours
   raw_reviews = ReviewsService().get_recent_reviews(helpers.formatted_date_day_ago())
-  processed_reviews = ReviewsService.process_reviews(raw_reviews)
 
   # generate unique set of subject ids
   subject_ids = set()
   for review in raw_reviews['data']:
     subject_ids.add(review['data']['subject_id'])
 
-  # fetch the subject objects from WaniKani
+  # fetch the subjects from WaniKani
   raw_subjects = SubjectsService().get_subjects_by_id_list(subject_ids)
   processed_subjects = SubjectsService.process_subjects(raw_subjects)
+
+  # process review data using subject types for better sorting
+  processed_reviews = ReviewsService.process_reviews(raw_reviews, processed_subjects)
 
   return helpers.json_response({
     'reviews': processed_reviews,
