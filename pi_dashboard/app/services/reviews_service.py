@@ -1,15 +1,8 @@
 import os, requests
 import helpers
+from service import Service
 
-class Service(object):
-  def __init__(self):
-    # find token and setup headers object
-    token = os.getenv('WANIKANI_TOKEN')
-    if not token:
-      raise Exception('secret token not found')
-
-    self.headers = {'Authorization': 'Bearer ' + token}
-
+class ReviewsService(Service):
   # get a list of reviews for the last 24 hours
   # if an item was reviews multiple times in this time period use the most recent review
   def get_recent_reviews(self, date):
@@ -29,12 +22,12 @@ class Service(object):
     }
 
     # if there are any duplicates, we only want to most recent review
-    deduped_reviews = {}
-    for review in sorted(raw_reviews['data'], key=lambda r: r['data']['created_at']):
-      # this will replace any older review records with a newer version if there are multiple reviews for the same subject
-      deduped_reviews[review['data']['subject_id']] = review
+    processed_ids = set()
+    for review in sorted(raw_reviews['data'], key=lambda r: r['data']['created_at'], reverse=True):
+      # skip any subjects we've already seen
+      if review['data']['subject_id'] in processed_ids:
+        continue
 
-    for subject_id, review in deduped_reviews.items():
       # check if this item was correct or wrong in most recent review
       key1 = 'correct'
       if review['data']['ending_srs_stage'] < review['data']['starting_srs_stage']:

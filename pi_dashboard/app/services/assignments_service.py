@@ -1,16 +1,9 @@
 import os, requests
-from urllib.parse import quote
+# from urllib.parse import quote
+from service import Service
 
 
-class Service(object):
-  def __init__(self):
-    # find token and setup headers object
-    token = os.getenv('WANIKANI_TOKEN')
-    if not token:
-      raise Exception('secret token not found')
-
-    self.headers = {'Authorization': 'Bearer ' + token}
-
+class AssignmentsService(Service):
   # get assignments that are currently available as of the current time
   def get_available_assignments(self, date):
     query_parameters = [

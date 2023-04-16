@@ -1,14 +1,7 @@
 import os, requests
+from service import Service
 
-class Service(object):
-  def __init__(self):
-    # find token and setup headers object
-    token = os.getenv('WANIKANI_TOKEN')
-    if not token:
-      raise Exception('secret token not found')
-
-    self.headers = {'Authorization': 'Bearer ' + token}
-
+class SubjectsService(object):
   def get_subjects_by_id_list(self, ids):
     request_url = 'https://api.wanikani.com/v2/subjects?ids=' + ','.join([str(i) for i in ids])
 
