@@ -24,23 +24,20 @@ def test():
 '''
 this function will provide the data for the main WaniKani dashboard:
 {
-  'assignment_stats': {
-    # the 'levels' key will contain stats per level
-    'levels': {
-      '1': {
-        'kanji': 13, # total number of Kanji items ready for review
-        'radical': 12, # total number of radicals ready for review
-        'total': 20, # total number of items ready for review
-        'vocabulary': 5 # number of vocabulary items ready for review
-      }, ...
-    },
-    # these keys will provide overall stats
-    'kanji': 13, # total number of Kanji items ready for review
-    'radical': 12, # total number of radicals ready for review
-    'total': 20, # total number of items ready for review
-    'vocabulary': 5 # number of vocabulary ready for review
+  # the 'levels' key will contain stats per level
+  'levels': {
+    '1': {
+      'kanji': 13, # total number of Kanji items ready for review
+      'radical': 12, # total number of radicals ready for review
+      'total': 20, # total number of items ready for review
+      'vocabulary': 5 # number of vocabulary items ready for review
+    }, ...
   },
-  'username': 'NinjaDino' # your username
+  # these keys will provide overall stats
+  'kanji': 13, # total number of Kanji items ready for review
+  'radical': 12, # total number of radicals ready for review
+  'total': 20, # total number of items ready for review
+  'vocabulary': 5 # number of vocabulary ready for review
 }
 '''
 @app.route('/review-stats', methods=['GET'])
@@ -78,8 +75,7 @@ def get_current_assignments():
     assignment_stats['levels'][subject_level][subject_type] += 1
 
   return helpers.json_response({
-    'assignment_stats': assignment_stats,
-    'username': UserService().get_username()
+    'assignment_stats': assignment_stats
   })
 
 @app.route('/recent-reviews', methods=['GET'])

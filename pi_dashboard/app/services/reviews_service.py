@@ -11,7 +11,17 @@ class ReviewsService(Service):
     return response
 
   '''
-  process reviews into an organized dict for frontend use
+  process reviews into an organized dict for frontend use, format:
+  {
+    'correct': {
+      'apprentice': [ raw_review_struct1, raw_review_struct2, ... ],
+      'burned': [ raw_review_struct1 ],
+      'enlightened: [ raw_review_struct1 ]
+    },
+    'wrong': {
+      'apprentice': [ raw_review_struct1, raw_review_struct2, ... ],
+    }
+  }
   '''
   def process_reviews(raw_reviews):
     # declare useful vars

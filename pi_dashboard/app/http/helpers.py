@@ -5,15 +5,15 @@ from datetime import timedelta
 
 DATE_FORMAT = '%Y-%m-%dT%H:%M:%SZ'
 SRS_STAGES_DICT = {
-  '1': 'Apprentice',
-  '2': 'Apprentice',
-  '3': 'Apprentice',
-  '4': 'Apprentice',
-  '5': 'Guru',
-  '6': 'Guru',
-  '7': 'Master',
-  '8': 'Enlightened',
-  '9': 'Burned'
+  '1': 'apprentice',
+  '2': 'apprentice',
+  '3': 'apprentice',
+  '4': 'apprentice',
+  '5': 'guru',
+  '6': 'guru',
+  '7': 'master',
+  '8': 'enlightened',
+  '9': 'burned'
 }
 
 def formatted_date_day_ago():
