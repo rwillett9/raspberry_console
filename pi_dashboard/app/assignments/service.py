@@ -1,5 +1,4 @@
 import os, requests
-from time import gmtime, strftime
 from urllib.parse import quote
 
 
@@ -13,9 +12,9 @@ class Service(object):
     self.headers = {'Authorization': 'Bearer ' + token}
 
   # get assignments that are currently available as of the current time
-  def get_available_assignments(self):
+  def get_available_assignments(self, date):
     query_parameters = [
-      'available_before=%s' % (strftime('%Y-%m-%dT%H:%M:%SZ', gmtime()))
+      'available_before=%s' % date
     ]
     request_url = '?' + '&'.join(query_parameters)
 

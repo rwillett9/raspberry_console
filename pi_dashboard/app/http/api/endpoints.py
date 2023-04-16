@@ -1,7 +1,9 @@
-import sys
-from flask import Flask, json
+import os, sys
+import helpers
+from flask import Flask
 from flask_cors import CORS, cross_origin
 from app.assignments.service import Service as AssignmentsService
+from app.reviews.service import Service as ReviewsService
 from app.subjects.service import Service as SubjectsService
 from app.user.service import Service as UserService
 from app.japaneseWOTD.service import Service as WOTDService
@@ -10,10 +12,6 @@ from app.japaneseWOTD.service import Service as WOTDService
 app = Flask(__name__)
 CORS(app)
 
-# helper function
-def json_response(payload, status=200):
-  return (json.dumps(payload), status, {'content-type': 'application/json'})
-
 '''
 this function is mainly used as a test to make sure this project was setup properly, also returns the user's username
 '''
@@ -21,7 +19,7 @@ this function is mainly used as a test to make sure this project was setup prope
 @cross_origin()
 def test():
   user = UserService().find_user()
-  return json_response({'username': user['data']['username']})
+  return helpers.json_response({'username': user['data']['username']})
 
 '''
 this function will provide the data for the main WaniKani dashboard:
@@ -49,7 +47,7 @@ this function will provide the data for the main WaniKani dashboard:
 @cross_origin()
 def get_current_assignments():
   # get assignment data
-  available_assignments = AssignmentsService().get_available_assignments()
+  available_assignments = AssignmentsService().get_available_assignments(helpers.formatted_date_now())
   # use the subject ids to gather subject data (each review item is a 'subject')
   subject_ids = [a['data']['subject_id'] for a in available_assignments]
   subjects = SubjectsService().get_subjects_by_id_list(subject_ids)
@@ -79,10 +77,18 @@ def get_current_assignments():
       }
     assignment_stats['levels'][subject_level][subject_type] += 1
 
-  return json_response({
+  return helpers.json_response({
     'assignment_stats': assignment_stats,
     'username': UserService().get_username()
   })
+
+@app.route('/recent-reviews', methods=['GET'])
+@cross_origin()
+def get_recent_reviews():
+  reviews = ReviewsService().get_recent_reviews(helpers.formatted_date_day_ago())
+  processed_reviews = ReviewsService.process_reviews(reviews)
+  # print(reviews)
+  return helpers.json_response(processed_reviews)
 
 @app.route('/word-of-the-day', methods=['GET'])
 @cross_origin()
@@ -90,4 +96,4 @@ def get_word_of_the_day():
   word_of_the_day_data = WOTDService().get_word_of_the_day()
   print(word_of_the_day_data)
 
-  return json_response(word_of_the_day_data)
+  return helpers.json_response(word_of_the_day_data)
