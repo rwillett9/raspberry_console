@@ -10,7 +10,8 @@ function WanikaniReviews() {
   const [isLoading, setLoading] = useState(true)
   const [reviews, setReviews] = useState(true)
   const [kanji, setKanji] = useState(true)
-  const stages = ['apprentice', 'guru', 'master', 'enlightened', 'burned']
+  const STAGES = ['apprentice', 'guru', 'master', 'enlightened', 'burned']
+  const SUBJECT_TYPES = ['radical, kanji, vocabulary']
 
   useEffect(() => {
     axios.get('http://localhost:4433/recent-reviews')
@@ -40,16 +41,32 @@ function WanikaniReviews() {
             </Col>
           </Row>
           <div className='my-2'>Correct:</div>
-          {stages.map(stage => (
+          {STAGES.map(stage => (
             <div key={'correct_' + stage}>
               {Object.keys(reviews.correct).includes(stage) &&
                 <Row>
                   {stage.charAt(0).toUpperCase() + stage.slice(1)}:
-                  {reviews.correct[stage].map(subject => (
+                  {SUBJECT_TYPES.map(type => (
+                    <div key={'correct_' + stage + '_' + type}>
+                      {Object.keys(reviews.correct[stage]).includes(type) &&
+                      <div>{type}</div>
+                      // reviews.correct[stage][type].map(subject => (
+                      //   <div key={subject.data.subject_id}>
+                      //     {kanji[subject.data.subject_id]['character']}
+                      //   </div>
+                      // )
+                      // )
+                      }
+                    </div>
+                  ))}
+
+
+
+                  {/* {reviews.correct[stage].map(subject => (
                     <div key={subject.data.subject_id}>
                       {kanji[subject.data.subject_id]['character']}
                     </div>
-                  ))}
+                  ))} */}
                 </Row>
               }
             </div>

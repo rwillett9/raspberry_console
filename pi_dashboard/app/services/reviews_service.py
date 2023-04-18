@@ -67,10 +67,5 @@ class ReviewsService(Service):
       except KeyError:
         processed_reviews[key1][current_stage][curr_type] = [review]
 
-      # try:
-      #   processed_reviews[key1][current_stage].append(review)
-      # except:
-      #   processed_reviews[key1][current_stage] = [review]
-
     processed_reviews['percentage'] = round((num_correct / num_total) * 100)
     return processed_reviews
