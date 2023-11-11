@@ -3,6 +3,7 @@ import helpers
 from flask import Flask
 from flask_cors import CORS, cross_origin
 from app.services.assignments_service import AssignmentsService
+from app.services.levels_service import LevelsService
 from app.services.reviews_service import ReviewsService
 from app.services.subjects_service import SubjectsService
 from app.services.user_service import UserService
@@ -21,6 +22,9 @@ def test():
   user = UserService().find_user()
   return helpers.json_response({'username': user['data']['username']})
 
+'''
+@TODO
+'''
 @app.route('/recent-reviews', methods=['GET'])
 @cross_origin()
 def get_recent_reviews():
@@ -40,6 +44,7 @@ def get_recent_reviews():
   processed_reviews = ReviewsService.process_reviews(raw_reviews, processed_subjects)
 
   return helpers.json_response({
+    'raw_reviews': raw_reviews,
     'reviews': processed_reviews,
     'subjects': processed_subjects
   })
@@ -101,6 +106,9 @@ def get_current_assignments():
     'assignment_stats': assignment_stats
   })
 
+'''
+@TODO
+'''
 @app.route('/word-of-the-day', methods=['GET'])
 @cross_origin()
 def get_word_of_the_day():
@@ -108,3 +116,12 @@ def get_word_of_the_day():
   print(word_of_the_day_data)
 
   return helpers.json_response(word_of_the_day_data)
+
+'''
+@TODO
+'''
+@app.route('/level-progression', methods=['GET'])
+@cross_origin()
+def get_level_progression():
+  level_progression_data = LevelsService().get_all_levels()
+  return helpers.json_response(level_progression_data)

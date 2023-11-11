@@ -6,6 +6,7 @@ class ReviewsService(Service):
   # get a list of reviews for the last 24 hours
   # if an item was reviews multiple times in this time period use the most recent review
   def get_recent_reviews(self, date):
+    # NOTE: this endpoint is getting reworked, this may need to be updated
     request_url = 'https://api.wanikani.com/v2/reviews?updated_after=' + date
     response = requests.get(url=request_url, headers=self.headers).json()
     return response
@@ -31,15 +32,26 @@ class ReviewsService(Service):
   def process_reviews(raw_reviews, subject_dict):
     # declare useful vars
     srs_num_to_stage = helpers.SRS_STAGES_DICT
-    processed_reviews = {
+    res = {
       'correct': {},
       'wrong': {},
-      'percentage': 0
+      'stats': {
+        'correct': {
+          'radicals': 0,
+          'kanji': 0,
+          'vocabulary': 0
+        },
+        'totals': {
+          'radicals': 0,
+          'kanji': 0,
+          'vocabulary': 0
+        },
+        'percentage': 0,
+        'total_items': 0
+      }
     }
 
     # if there are any duplicates, we only want to most recent review
-    num_correct = 0
-    num_total = 0
     processed_ids = set()
     for review in sorted(raw_reviews['data'], key=lambda r: r['data']['created_at'], reverse=True):
       # skip any subjects we've already seen
@@ -47,25 +59,30 @@ class ReviewsService(Service):
         continue
       processed_ids.add(review['data']['subject_id'])
 
+      # get the current stage as a string using helper dict
+      curr_stage = srs_num_to_stage[str(review['data']['ending_srs_stage'])]
+      # get the current type of item ('radicals', 'kanji', or 'vocabulary')
+      curr_type = subject_dict[review['data']['subject_id']]['type']
+
       # check if this item was correct or wrong in most recent review
-      num_total += 1
       key1 = 'correct'
       if review['data']['ending_srs_stage'] < review['data']['starting_srs_stage']:
         key1 = 'wrong'
       else:
-        num_correct += 1
-
-      # get the current stage as a string using helper dict
-      current_stage = srs_num_to_stage[str(review['data']['ending_srs_stage'])]
+        res['stats']['correct'][curr_type] += 1
+      res['stats']['totals'][curr_type] += 1
 
       # add this item to our organized dict
-      curr_type = subject_dict[review['data']['subject_id']]['type']
-      if current_stage not in processed_reviews[key1]:
-        processed_reviews[key1][current_stage] = {}
+      if curr_stage not in res[key1]:
+        res[key1][curr_stage] = {}
       try:
-        processed_reviews[key1][current_stage][curr_type].append(review)
+        res[key1][curr_stage][curr_type].append(review)
       except KeyError:
-        processed_reviews[key1][current_stage][curr_type] = [review]
+        res[key1][curr_stage][curr_type] = [review]
 
-    processed_reviews['percentage'] = round((num_correct / num_total) * 100)
-    return processed_reviews
+    # avoid divide by zero error
+    res['stats']['total_items'] = res['stats']['totals']['radicals'] + res['stats']['totals']['kanji'] + res['stats']['totals']['vocabulary']
+    if res['stats']['total_items'] != 0:
+      num_correct = res['stats']['correct']['radicals'] + res['stats']['correct']['kanji'] + res['stats']['correct']['vocabulary']
+      res['stats']['percentage'] = round((num_correct / res['stats']['total_items']) * 100)
+    return res
