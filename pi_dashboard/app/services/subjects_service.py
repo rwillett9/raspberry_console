@@ -1,7 +1,7 @@
 import os, requests
-from base_service import BaseService
+from base_service import BaseWanikaniService
 
-class SubjectsService(BaseService):
+class SubjectsService(BaseWanikaniService):
   def get_subjects_by_id_list(self, ids):
     request_url = 'https://api.wanikani.com/v2/subjects?ids=' + ','.join([str(i) for i in ids])
 
@@ -9,7 +9,7 @@ class SubjectsService(BaseService):
     subjects = []
     get_more = True
     while get_more:
-      response = requests.get(url=request_url, headers=self.headers).json()
+      response = self.do_get_request(url=request_url).json()
       subjects.extend(response['data'])
 
       if response['pages']['next_url'] is not None:

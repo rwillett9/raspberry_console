@@ -1,9 +1,9 @@
 import os, requests
 # from urllib.parse import quote
-from base_service import BaseService
+from base_service import BaseWanikaniService
 
 
-class AssignmentsService(BaseService):
+class AssignmentsService(BaseWanikaniService):
   # get assignments that are currently available as of the current time
   def get_available_assignments(self, date):
     query_parameters = [
@@ -15,7 +15,7 @@ class AssignmentsService(BaseService):
     assignments = []
     get_more = True
     while get_more:
-      response = requests.get(url='https://api.wanikani.com/v2/assignments' + request_url, headers=self.headers).json()
+      response = self.do_get_request(url='https://api.wanikani.com/v2/assignments' + request_url).json()
       assignments.extend(response['data'])
 
       if response['pages']['next_url'] is not None:
