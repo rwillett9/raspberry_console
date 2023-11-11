@@ -1,9 +1,9 @@
 import os, requests
 # from urllib.parse import quote
-from service import Service
+from base_service import BaseService
 
 
-class AssignmentsService(Service):
+class AssignmentsService(BaseService):
   # get assignments that are currently available as of the current time
   def get_available_assignments(self, date):
     query_parameters = [

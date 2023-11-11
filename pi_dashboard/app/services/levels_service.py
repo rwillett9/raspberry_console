@@ -1,7 +1,7 @@
 import os, requests
-from service import Service
+from base_service import BaseService
 
-class LevelsService(Service):
+class LevelsService(BaseService):
   def __init__(self):
     # find token and setup headers object
     token = os.getenv('WANIKANI_TOKEN')

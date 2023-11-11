@@ -1,7 +1,7 @@
 import os, requests
-from service import Service
+from base_service import BaseService
 
-class SubjectsService(Service):
+class SubjectsService(BaseService):
   def get_subjects_by_id_list(self, ids):
     request_url = 'https://api.wanikani.com/v2/subjects?ids=' + ','.join([str(i) for i in ids])
 

@@ -1,8 +1,8 @@
 import os, requests
 import helpers
-from service import Service
+from base_service import BaseService
 
-class ReviewsService(Service):
+class ReviewsService(BaseService):
   # get a list of reviews for the last 24 hours
   # if an item was reviews multiple times in this time period use the most recent review
   def get_recent_reviews(self, date):
