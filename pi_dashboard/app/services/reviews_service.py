@@ -1,4 +1,3 @@
-import os, requests
 import helpers
 from base_service import BaseWanikaniService
 
@@ -8,7 +7,7 @@ class ReviewsService(BaseWanikaniService):
   def get_recent_reviews(self, date):
     # NOTE: this endpoint is getting reworked, this may need to be updated
     request_url = 'https://api.wanikani.com/v2/reviews?updated_after=' + date
-    response = requests.get(url=request_url, headers=self.headers).json()
+    response = self.do_get_request(url=request_url).json()
     return response
 
   '''

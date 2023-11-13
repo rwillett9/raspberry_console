@@ -1,5 +1,3 @@
-import os, requests
-# from urllib.parse import quote
 from base_service import BaseWanikaniService
 
 

@@ -1,4 +1,3 @@
-import os, requests
 from base_service import BaseWanikaniService
 
 class UserService(BaseWanikaniService):
